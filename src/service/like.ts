@@ -23,6 +23,16 @@ export const getLikes = async (threadId: number) => {
 
 }
 
+
+export const getCurrentLike = async (threadId:number, userId:number) => {
+    return await db.like.findFirst ({
+        where: {
+            threadId,
+            userId
+        }
+    })
+}
+
 export const createLike = async (payload: {threadId:number ; userId:number}) => {
     const existedThread = await db.thread.findFirst({
         where: {
@@ -42,18 +52,21 @@ export const createLike = async (payload: {threadId:number ; userId:number}) => 
     })
 
     if(existedLike) {
-        return await db.like.deleteMany({
+         await db.like.deleteMany({
             where: {
                 threadId: payload.threadId,
                 userId: payload.userId
             }
         })
+        return "Unlike Success"
     }
 
-    return await db.like.create({
+     await db.like.create({
         data: {
             ...payload
         }
     })
+
+    return "Like Success"
     
 }

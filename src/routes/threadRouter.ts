@@ -1,15 +1,15 @@
 import { Router } from "express";
 import authentication from "../middleware/authentication";
 import uploadMiddleware from "../middleware/upload";
-import { getProfile, updateProfile } from "../controller/profile";
-import { createThread, getReplies, getThread, getThreads } from "../controller/thread";
+import { createThread, getReplies, getThread,  getThreadUserId,  getThreads } from "../controller/thread";
 
 const threadRouter = Router()
 
 threadRouter.post("/thread", authentication, uploadMiddleware("image"), createThread)
-threadRouter.get("/thread",authentication, getThreads)
-threadRouter.get("/thread/:id",authentication, getThread)
+threadRouter.get("/thread", getThreads)
+threadRouter.get("/thread/:id", getThread)
 threadRouter.get("/replies/:id",authentication, getReplies)
+threadRouter.get("/thread/user/:userId",authentication, getThreadUserId)
 
 
 export default threadRouter

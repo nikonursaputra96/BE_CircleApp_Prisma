@@ -56,6 +56,8 @@ model Thread {
   parent Thread? @relation("threadReplies", fields: [threadId],references: [id])
   replies Thread[] @relation("threadReplies")
   image ThreadImage[]
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
 
 model Like {

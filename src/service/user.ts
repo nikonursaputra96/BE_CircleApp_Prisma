@@ -4,8 +4,30 @@ import { IRegister } from "../type/app"
 import * as bcrypt from "bcrypt"
 import jwt from "jsonwebtoken"
 
-export const getUsers = async () => {
-    return await db.user.findMany()
+export const getUsers = async (userId:number) => {
+    return await db.user.findMany({
+      where: {
+        NOT: {
+            id:userId
+        }
+      },
+        
+        include: {
+            profile: {
+                select: {
+                    avatar:true
+                }
+            },follower : {
+                select: {
+                    followerId: true
+                }
+            }, following : {
+                select : {
+                    followingId: true
+                }
+            }
+        }
+    })
 }
 
 export const getUser = async (id: number) => {
@@ -86,3 +108,32 @@ export const login = async (username:string, password:string): Promise<string> =
     
     return token
 }
+
+// Search
+export const searchName = async (searchName: string) => {
+    return await db.user.findMany({
+        where: {
+            OR: [
+                {fullname: {contains: searchName}},
+                {username: {contains: searchName}}
+            ],
+        },include : {
+            profile: {
+                select: {
+                    avatar: true,
+                    bio: true,
+                    cover: true
+                }
+            }
+        }
+    })
+    
+}
+
+// Suggested 
+export const suggestedUsers = async () => {
+    return await db.user.findMany({
+        take: 10,
+    })
+}
+

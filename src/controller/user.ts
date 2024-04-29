@@ -38,7 +38,8 @@ export const login = async (req:Request , res: Response) => {
 
 export const getUsers = async (req:Request, res: Response) => {
     try {
-        const users = await userService.getUsers()
+        const userId = res.locals.user
+        const users = await userService.getUsers(userId)
 
         res.json({
             status: true,
@@ -52,3 +53,24 @@ export const getUsers = async (req:Request, res: Response) => {
             message : err.message})
     }
 }
+
+// Search
+export const searchName = async (req:Request, res: Response) => {
+    const {searchName} = req.query
+    try {
+        const name =  await userService.searchName(searchName as string)
+
+        res.json({
+            status:true,
+            message: "FIND DATA",
+            data: name
+        })
+    } catch (error) {
+        const err = error as unknown as Error
+        res.status(500).json({
+            status:false,
+            message: err.message
+        })
+    }
+}
+
