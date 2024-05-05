@@ -39,15 +39,37 @@ export const getThread = async (req: Request, res: Response) => {
     }
 }
 
+// export const createThread = async (req: Request, res: Response) => {
+//     try {
+
+//         const {body} = req
+//         body.userId = res.locals.user
+//         const thread = await threadService.createThread(
+//             body,
+//             req.files as {[fieldname: string] : Express.Multer.File[]}
+//         )
+//         res.json({
+//             status: true,
+//             message: "SUCCESS",
+//             data: thread,
+//         })
+//     } catch (error) {
+//         const err = error as unknown as Error
+//         res.status(500).json({
+//             status: false,
+//             message : err.message})
+//     }
+// }   
+
 export const createThread = async (req: Request, res: Response) => {
     try {
 
         const {body} = req
         body.userId = res.locals.user
-        const thread = await threadService.createThread(
-            body,
-            req.files as {[fieldname: string] : Express.Multer.File[]}
-        )
+        if (body.threadId) {
+            body.threadId = +body.threadId;
+        }
+        const thread = await threadService.createThread(body)
         res.json({
             status: true,
             message: "SUCCESS",
@@ -60,6 +82,7 @@ export const createThread = async (req: Request, res: Response) => {
             message : err.message})
     }
 }   
+
 
 export const getReplies = async (req: Request, res: Response) => {
     try {

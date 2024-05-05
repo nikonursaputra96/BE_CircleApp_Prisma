@@ -5,27 +5,26 @@ export const updateProfile = async (req: Request, res: Response) => {
     try {
         const userId = res.locals.user
         const{body} = req
-        const files = req.files as {[fieldname:string] : Express.Multer.File[]}
-        let cover = ''
-        let avatar = ''
-        // const avatar = files.avatar? files.avatar[0].filename :null
-        // const cover = files.cover? files.cover[0] .filename : null
+        // const files = req.files as {[fieldname:string] : Express.Multer.File[]}
+        // let cover = ''
+        // let avatar = ''
+       
 
 
-        if(files && files.cover && files.cover[0]) {
-            cover = files.cover[0].filename
-        }
+        // if(files && files.cover && files.cover[0]) {
+        //     cover = files.cover[0].filename
+        // }
 
-        if(files && files.avatar && files.avatar[0]){
-            avatar = files.avatar[0].filename
-        }
+        // if(files && files.avatar && files.avatar[0]){
+        //     avatar = files.avatar[0].filename
+        // }
         
-        if (cover) {
-            body.cover = cover
-        }
-        if (avatar) {
-            body.avatar = avatar
-        }
+        // if (cover) {
+        //     body.cover = cover
+        // }
+        // if (avatar) {
+        //     body.avatar = avatar
+        // }
 
         
         await profileService.updateProfile(userId, body)

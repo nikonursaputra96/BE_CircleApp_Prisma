@@ -28,4 +28,11 @@ export interface IThread {
     content? : string;
     threadId? : number;
     userId : number;
+    images?: IImage[];
+}
+
+export interface IImage {
+    id?: number
+    image: string
+    threadId: number
 }

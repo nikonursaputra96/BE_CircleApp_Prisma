@@ -9,24 +9,35 @@ export const getUsers = async (userId:number) => {
       where: {
         NOT: {
             id:userId
+        }, following: {
+            none: {
+                followerId: userId
+            }
         }
       },
         
         include: {
             profile: {
                 select: {
-                    avatar:true
+                    avatar:true,
                 }
             },follower : {
-                select: {
-                    followerId: true
-                }
+                include: {
+                    follower: {
+                        select: {
+                            id:true,
+                            fullname:true,
+                            
+                        }
+                    }
+                },
+           
             }, following : {
                 select : {
-                    followingId: true
+                    followingId: true,
                 }
             }
-        }
+        },take: 5
     })
 }
 

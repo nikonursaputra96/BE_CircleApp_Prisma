@@ -8,6 +8,7 @@ import followRouter from "./followRouter";
 
 const router = Router()
 
+
 router.use("/", userRouter)
 router.use("/", profileRouter)
 router.use("/", threadRouter)

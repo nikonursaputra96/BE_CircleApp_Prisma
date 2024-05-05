@@ -66,20 +66,43 @@ export const getThread = async (id:number) => {
     })
 }
 
-export const createThread = async (payload: IThread, files: {[fieldname: string] : Express.Multer.File[]}) => {
+// export const createThread = async (payload: IThread, files: {[fieldname: string] : Express.Multer.File[]}) => {
+//     const thread = await db.thread.create({
+//         data : {
+//             ...payload,
+//             threadId: payload.threadId ? +payload.threadId: null
+//         },
+//     })
+
+
+
+//     if(files.image) {
+//         await db.threadImage.createMany({
+//             data: files.image.map((image) => ({
+//                 image : image.filename,
+//                 threadId: thread.id
+//             }))  
+//         })
+//     }
+
+//     return thread
+// }
+export const createThread = async (payload: IThread) => {
+    console.log("payload", payload)
     const thread = await db.thread.create({
         data : {
-            ...payload,
+            content: payload.content,
+            userId: payload.userId,
             threadId: payload.threadId ? +payload.threadId: null
         },
     })
 
 
 
-    if(files.image) {
+    if(payload.images && payload.images.length > 0) {
         await db.threadImage.createMany({
-            data: files.image.map((image) => ({
-                image : image.filename,
+            data: payload.images.map((image) => ({
+                image : image.image,
                 threadId: thread.id
             }))  
         })
@@ -87,6 +110,7 @@ export const createThread = async (payload: IThread, files: {[fieldname: string]
 
     return thread
 }
+
 
 export const deletedThread = async (idThread:number, userId:number) => {
     const existedThread = await db.thread.findFirst({
